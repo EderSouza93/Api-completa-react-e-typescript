@@ -10,13 +10,17 @@ app.setErrorHandler((error, request, reply) =>{
 })
 
 const start = async () => {
-
-    await app.register(cors);
-    await app.register(routes);   
-
     try{
-        await app.listen({ port: 3333 })
+        await app.register(cors);
+        await app.register(routes);   
+
+        const portString = process.env.PORT || 3333;
+        const port = Number(portString)
+        
+        await app.listen({ port, host: '0.0.0.0'});
+        app.log.info(`Server listening on port ${port}`);
     }catch(err){
+        app.log.error
         process.exit(1)
     }
 }
